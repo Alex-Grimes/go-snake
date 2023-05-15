@@ -88,10 +88,6 @@ func displayFrame() {
 	Screen.Show()
 }
 
-func printUnfilledRectangle(frameOriginX, frameOriginY, FRAME_WIDTH, FRAME_HEIGHT, FRAME_BORDER_THICKNESS int, FRAME_BORDER_VERTICAL, FRAME_BORDER_HORIZONTAL, FRAME_BORDER_TOP_LEFT, FRAME_BORDER_TOP_RIGHT, FRAME_BORDER_BOTTOM_LEFT, FRAME_BORDER_BOTTOM_RIGHT rune) {
-	panic("unimplemented")
-}
-
 func displayGameObjects() {
 	displaySnake()
 	displayFood()
@@ -136,4 +132,14 @@ func printAtCenter(startY int, content string, trackClear bool) {
 		}
 	}
 	Screen.Show()
+}
+
+func clearScreen() {
+	for _, coordinate := range CoordinateToClear {
+		print(coordinate.x, coordinate.y, 1, 1, tcell.StyleDefault, ' ')
+	}
+}
+
+func printUnfilledRectangle(xOrigin, yOrigin, width, height, borderThickness int, verticalOutline, horizontalOutline, topLeftOutline, topRightOutline, bottomLeftOutline, bottomRightOutline rune) {
+	panic("unimplemented")
 }
