@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/gdamore/tcell/encoding"
 	"github.com/gdamore/tcell/v2"
@@ -44,7 +45,46 @@ const SNAKE_SYMBOL = 'O'
 const FOOD_SYMBOL = '*'
 
 func main() {
+	initScreen()
+	initializeGameObjects()
+	displayFrame()
+	displayGameScore()
+	userInput := readUserInput()
+	var key string
+	for !isGameOver {
+		if isGamePaused {
+			displayGamePausedInfo()
+		}
+		key = getUserInput(userInput)
+		handleUserInput(key)
+		updateGameState()
+		displayGameObjects()
+		time.Sleep(75 * time.Millisecond)
+	}
 
+	displayGameOverInfo()
+	time.Sleep(3 * time.Second)
+
+}
+
+func updateGameState() {
+	panic("unimplemented")
+}
+
+func handleUserInput(key string) {
+	panic("unimplemented")
+}
+
+func getUserInput(userInput chan string) string {
+	panic("unimplemented")
+}
+
+func readUserInput() chan string {
+	panic("unimplemented")
+}
+
+func initializeGameObjects() {
+	panic("unimplemented")
 }
 
 func initScreen() {
@@ -141,5 +181,34 @@ func clearScreen() {
 }
 
 func printUnfilledRectangle(xOrigin, yOrigin, width, height, borderThickness int, verticalOutline, horizontalOutline, topLeftOutline, topRightOutline, bottomLeftOutline, bottomRightOutline rune) {
-	panic("unimplemented")
+	var upperBorder, lowerBorder rune
+	verticalBorder := verticalOutline
+	for i := 0; i < width; i++ {
+		if i == 0 {
+			upperBorder = topLeftOutline
+			lowerBorder = bottomLeftOutline
+		} else if i == width-1 {
+			upperBorder = topRightOutline
+			lowerBorder = bottomRightOutline
+		} else {
+			upperBorder = horizontalOutline
+			lowerBorder = horizontalOutline
+		}
+		print(xOrigin+i, yOrigin, borderThickness, borderThickness, tcell.StyleDefault, upperBorder)
+		print(xOrigin+i, yOrigin+height-1, borderThickness, borderThickness, tcell.StyleDefault, lowerBorder)
+	}
+
+	for i := 1; i < height-1; i++ {
+		print(xOrigin, yOrigin+i, borderThickness, borderThickness, tcell.StyleDefault, verticalBorder)
+		print(xOrigin+width-1, yOrigin+i, borderThickness, borderThickness, tcell.StyleDefault, verticalBorder)
+	}
+}
+
+func getBoundaries() (int, int, int, int) {
+	originX, originY := getFrameOrigin()
+	topY := originY
+	bottomY := originY + FRAME_HEIGHT - FRAME_BORDER_THICKNESS
+	leftX := originX
+	rightX := originX + FRAME_WIDTH - FRAME_BORDER_THICKNESS
+	return topY, bottomY, leftX, rightX
 }
