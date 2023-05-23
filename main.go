@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
 
@@ -84,6 +85,20 @@ func updateFood() {
 }
 
 func generateNewFoodCoordinate() (int, int) {
+	rand.Seed(time.Now().UnixMicro())
+	randomX := rand.Intn(FRAME_WIDTH - 2*FRAME_BORDER_THICKNESS)
+	randomY := rand.Intn(FRAME_HEIGHT - 2*FRAME_BORDER_THICKNESS)
+
+	newCoordinate := &Coordinate{
+		randomX, randomY,
+	}
+
+	transformCoordinateInsideFrame(newCoordinate)
+
+	return newCoordinate.x, newCoordinate.y
+}
+
+func transformCoordinateInsideFrame(newCoordinate *Coordinate) {
 	panic("unimplemented")
 }
 
