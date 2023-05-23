@@ -68,19 +68,77 @@ func main() {
 }
 
 func updateGameState() {
+	if isGamePaused {
+		return
+	}
+	clearScreen()
+	updateSnake()
+	updateFood()
+}
+
+func updateFood() {
+	for isFoodOnSnake() {
+		CoordinateToClear = append(CoordinateToClear, food.point)
+		food.point.x, food.point.y = generateNewFoodCoordinate()
+	}
+}
+
+func generateNewFoodCoordinate() (int, int) {
+	panic("unimplemented")
+}
+
+func isFoodOnSnake() bool {
+	panic("unimplemented")
+}
+
+func updateSnake() {
 	panic("unimplemented")
 }
 
 func handleUserInput(key string) {
-	panic("unimplemented")
+	if key == "Rune[q]" {
+		Screen.Fini()
+		os.Exit(0)
+	} else if key == "Rune[p]" {
+		isGamePaused = !isGamePaused
+	} else if !isGamePaused {
+		if key == "Up" && snake.rowVelocity == 0 {
+			snake.rowVelocity = -1
+			snake.columnVelocity = 0
+		} else if key == "Down" && snake.rowVelocity == 0 {
+			snake.rowVelocity = 1
+			snake.columnVelocity = 0
+		} else if key == "Left" && snake.columnVelocity == 0 {
+			snake.rowVelocity = 0
+			snake.columnVelocity = -1
+		} else if key == "Right" && snake.columnVelocity == 0 {
+			snake.rowVelocity = 0
+			snake.columnVelocity = 1
+		}
+	}
 }
 
 func getUserInput(userInput chan string) string {
-	panic("unimplemented")
+	var key string
+	select {
+	case key = <-userInput:
+	default:
+		key = ""
+	}
+	return key
 }
 
 func readUserInput() chan string {
-	panic("unimplemented")
+	userInput := make(chan string)
+	go func() {
+		for {
+			switch ev := Screen.PollEvent().(type) {
+			case *tcell.EventKey:
+				userInput <- ev.Name()
+			}
+		}
+	}()
+	return userInput
 }
 
 func initializeGameObjects() {
