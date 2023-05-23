@@ -99,7 +99,15 @@ func generateNewFoodCoordinate() (int, int) {
 }
 
 func transformCoordinateInsideFrame(newCoordinate *Coordinate) {
-	panic("unimplemented")
+	leftX, rightX, topY, bottomY := getBoundaries()
+	newCoordinate.x += leftX + FRAME_BORDER_THICKNESS
+	newCoordinate.y += topY + FRAME_BORDER_THICKNESS
+	for newCoordinate.x > rightX {
+		newCoordinate.x--
+	}
+	for newCoordinate.y >= bottomY {
+		newCoordinate.y--
+	}
 }
 
 func isFoodOnSnake() bool {
