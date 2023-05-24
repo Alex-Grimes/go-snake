@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"fmt"
 	"math/rand"
@@ -112,7 +111,12 @@ func transformCoordinateInsideFrame(newCoordinate *Coordinate) {
 }
 
 func isFoodOnSnake() bool {
-	panic("unimplemented")
+	for _, snakeBodyPart := range snake.body {
+		if snakeBodyPart.x == food.point.x && snakeBodyPart.y == food.point.y {
+			return true
+		}
+	}
+	return false
 }
 
 func updateSnake() {
@@ -166,7 +170,41 @@ func readUserInput() chan string {
 }
 
 func initializeGameObjects() {
-	panic("unimplemented")
+	snake = &Snake{
+		body:           getInitialSnakeBody(),
+		columnVelocity: 0,
+		rowVelocity:    1,
+		symbol:         SNAKE_SYMBOL,
+	}
+
+	food = &Food{
+		point:  getInitialFoodCoordinates(),
+		symbol: FOOD_SYMBOL,
+	}
+}
+
+func getInitialFoodCoordinates() *Coordinate {
+	foodInitialCoordinate := &Coordinate{FRAME_WIDTH / 2, FRAME_HEIGHT / 2}
+	transformCoordinateInsideFrame(foodInitialCoordinate)
+	return foodInitialCoordinate
+}
+
+func getInitialSnakeBody() []*Coordinate {
+	snakeInitialCoordinate1 := &Coordinate{8, 4}
+	transformCoordinateInsideFrame(snakeInitialCoordinate1)
+	snakeInitialCoordinate2 := &Coordinate{8, 5}
+	transformCoordinateInsideFrame(snakeInitialCoordinate2)
+	snakeInitialCoordinate3 := &Coordinate{8, 6}
+	transformCoordinateInsideFrame(snakeInitialCoordinate3)
+	snakeInitialCoordinate4 := &Coordinate{8, 7}
+	transformCoordinateInsideFrame(snakeInitialCoordinate4)
+
+	return []*Coordinate{
+		{snakeInitialCoordinate1.x, snakeInitialCoordinate1.y},
+		{snakeInitialCoordinate2.x, snakeInitialCoordinate2.y},
+		{snakeInitialCoordinate3.x, snakeInitialCoordinate3.y},
+		{snakeInitialCoordinate4.x, snakeInitialCoordinate4.y},
+	}
 }
 
 func initScreen() {
